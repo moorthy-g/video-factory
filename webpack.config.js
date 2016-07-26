@@ -1,0 +1,63 @@
+var webpack = require('webpack'),
+	path = require('path'),
+	autoprefixer = require('autoprefixer'),
+	ExtractTextPlugin = require('extract-text-webpack-plugin'),
+	CleanWebpackPlugin = require('clean-webpack-plugin'),
+	HtmlWebpackPlugin = require('html-webpack-plugin'),
+	extractCSS = new ExtractTextPlugin('./[name].[chunkhash:8].css');
+
+var loaders = [
+	{
+		test: /\.less$/,
+		loader: extractCSS.extract('style', 'css!postcss?pack=cleaner!less')
+	},
+	{
+		test: /\.(jpe?g|png|gif|webp)$/,
+		loader: 'file?name=./img/[name].[hash:8].[ext]'
+	},
+	{
+		test: /\.html$/,
+		loader: 'html?interpolate'
+	},
+	{
+		test: /\.(mp3|ogg)$/,
+		loader: 'file?name=./audio/[name].[ext]'
+	}
+]
+
+var plugins = [
+	extractCSS,
+	new HtmlWebpackPlugin({
+		template: path.resolve(__dirname, 'src', './view/index.html'),
+	}),
+	new CleanWebpackPlugin(['build'])
+]
+
+module.exports = {
+	devtool: 'eval',
+	entry: {
+		build: path.resolve(__dirname, 'src', 'js', 'animation-bootstrap.js')
+	},
+	output: {
+		path: path.resolve(__dirname, 'build'),
+		filename: '[name].[chunkhash:8].js',
+		chunkFilename: '[name].[chunkhash:8].[id].js'
+	},
+	devServer: {
+		contentBase: path.resolve(__dirname, 'build'),
+		host: '0.0.0.0',
+		colors: true,
+		inline: true,
+		compress: true
+	},
+	module: {
+		loaders: loaders
+	},
+	plugins: plugins,
+	postcss: function() {
+		return {
+			defaults: [ autoprefixer ],
+			cleaner: [ autoprefixer({ browsers:['iOS 7', 'IE 9'] }) ]
+		};
+	}
+}

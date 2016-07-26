@@ -1,0 +1,7 @@
+.git/
+node_modules/
+video_out/
+frames_out/
+build/
+*.css
+*.log
