@@ -2,7 +2,7 @@
 
 require('../style/main.less');
 require('gsap');
-var Promise = require('es6-promise');
+require('es6-promise').polyfill();
 
 window.injectConfig = function() {
 
@@ -41,3 +41,6 @@ var initAnimation = function() {
 
 config()
 .then(initAnimation)
+.then(null, function(error){
+	console.error(error)
+})

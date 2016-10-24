@@ -1,10 +1,9 @@
 'use strict';
 
-var Promise = require('es6-promise'),
-	sceneKrds = require('./scene-krdslogo');
+var sceneKrds = require('./scene-krdslogo');
 
 function Animation(config, callback) {
-	
+
 	this.tl = new TimelineMax({ paused: true });
 	this.config = config;
 	this.audio = null;
