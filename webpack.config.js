@@ -22,6 +22,11 @@ var loaders = [
 	{
 		test: /\.(mp3|ogg)$/,
 		loader: 'file?name=./audio/[name].[ext]'
+	},
+	{
+		test: /\.(woff2|woff|ttf|svg)$/,
+		include: path.resolve(__dirname, 'src', 'font'),
+		loader: 'file?name=./font/[hash:8].[ext]'
 	}
 ]
 
