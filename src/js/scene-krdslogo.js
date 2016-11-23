@@ -24,7 +24,8 @@ Scene.prototype.createTimeline = function() {
 
 Scene.prototype.createPreloadQueue = function() {
 	//images to preload for this scene
-	this.images.push( require("../img/logo.png") );
+	this.images.push( this.config.krdslogo.img );
+
 }
 
 module.exports = Scene;

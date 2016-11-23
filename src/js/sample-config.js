@@ -3,6 +3,9 @@ module.exports = {
 	height: 480,
 	autoplay: true,
 	framerate: 30,
-	audio: require('../audio/audio.mp3')
+	audio: require('../audio/audio.mp3'),
+	krdslogo: {
+		img: require('../img/logo.png')
+	}
 	/* other config entries */
 }
