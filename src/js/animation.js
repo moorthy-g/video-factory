@@ -11,6 +11,9 @@ function Animation(config, callback) {
 	this.loader = document.getElementById('animation_loader');
 	this.container = document.createElement('main');
 	this.images = [];
+	this.onComplete = new Function();
+  	this.onPause = new Function();
+  	this.onPlay = new Function();
 
 	this.showLoader();
 
@@ -23,6 +26,10 @@ function Animation(config, callback) {
 Animation.prototype.injectContent = function() {
 	//inject dynamic contents here
 }
+
+Animation.prototype.getCurrentTime = function () {
+	return this.tl.time() / this.tl.timeScale();
+};
 
 Animation.prototype.showLoader = function () {
 	this.loader.style.display = 'block';

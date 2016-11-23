@@ -37,6 +37,15 @@ var initAnimation = function() {
 		window.ready = true;
 		console.log('=== animation is ready to play ===');
 	});
+	window.animation.onComplete = function(){
+		console.log("====== complete =========", this.getCurrentTime())
+	}
+	window.animation.onPause = function(){
+		console.log("====== pause =========", this.getCurrentTime())
+	}
+	window.animation.onPlay = function(){
+		console.log("====== play =========", this.getCurrentTime())
+	}
 };
 
 config()

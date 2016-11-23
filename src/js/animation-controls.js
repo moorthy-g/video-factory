@@ -78,6 +78,7 @@ AnimationControls.prototype.init = function() {
 
 	//endof animation
 	tl.eventCallback('onComplete', function() {
+		self.animation.onComplete();
 		self.insistReplay();
 	});
 
@@ -151,6 +152,7 @@ AnimationControls.prototype.play = function() {
 		this.paused = false;
 		helper.removeClass(this.toggleBtn, 'replay')
 		helper.addClass(this.toggleBtn, 'playing');
+		this.animation.onPlay();
 	}
 }
 
@@ -160,6 +162,7 @@ AnimationControls.prototype.pause = function() {
 		this.audio.pause();
 		this.paused = true;
 		helper.removeClass(this.toggleBtn, 'playing')
+		this.replay || this.animation.onPause();
 	}
 }
 
@@ -169,9 +172,9 @@ AnimationControls.prototype.seek = function(time) {
 }
 
 AnimationControls.prototype.insistReplay = function() {
+	this.replay = true;
 	this.pause();
 	this.showControlBar();
-	this.replay = true;
 	helper.addClass(this.toggleBtn, 'replay');
 }
 
