@@ -12,7 +12,7 @@ function SceneCore(config, template) {
 
 SceneCore.prototype.parseTemplate = function (template) {
 	var parent = document.createElement('div');
-	parent.innerHTML = template;
+	parent.innerHTML = template(this.config);
 	this.container = parent.firstChild;
 };
 

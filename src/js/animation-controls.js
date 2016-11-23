@@ -3,7 +3,7 @@
 require('../style/animation-controls');
 
 var AnimationHelper = require('./animation-helper'),
-	AnimationControlsDOM = require('../view/animation-controls.html'),
+	AnimationControlsDOM = require('../view/animation-controls')(),
 	helper = new AnimationHelper();
 
 function AnimationControls(animation) {

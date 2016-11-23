@@ -21,6 +21,10 @@ var loaders = [
 		loader: 'html?interpolate'
 	},
 	{
+		test: /\.hbs$/,
+		loader: 'handlebars!html-minify'
+	},
+	{
 		test: /\.(mp3|ogg)$/,
 		loader: 'file?name=./audio/[name].[ext]'
 	},
@@ -34,7 +38,7 @@ var loaders = [
 var plugins = [
 	extractCSS,
 	new HtmlWebpackPlugin({
-		template: path.resolve(__dirname, 'src', './view/index.html'),
+		template: path.resolve(__dirname, 'src', './view/index'),
 	})
 ]
 
