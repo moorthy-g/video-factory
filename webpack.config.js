@@ -4,7 +4,8 @@ var webpack = require('webpack'),
 	ExtractTextPlugin = require('extract-text-webpack-plugin'),
 	CleanWebpackPlugin = require('clean-webpack-plugin'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
-	extractCSS = new ExtractTextPlugin('./[name].[chunkhash:8].css');
+	extractCSS = new ExtractTextPlugin('./[name].[chunkhash:8].css'),
+	isBuild = ( process.env.BUILD === 'yes' );
 
 var loaders = [
 	{
@@ -34,12 +35,24 @@ var plugins = [
 	extractCSS,
 	new HtmlWebpackPlugin({
 		template: path.resolve(__dirname, 'src', './view/index.html'),
-	}),
-	new CleanWebpackPlugin(['build'])
+	})
 ]
 
+var buildPlugins = [
+	new CleanWebpackPlugin(['build']),
+	new webpack.optimize.UglifyJsPlugin({
+		compress: {
+			drop_console: true
+		}
+	})
+]
+
+if(isBuild) {
+	plugins = plugins.concat(buildPlugins);
+}
+
 module.exports = {
-	devtool: 'eval',
+	devtool: isBuild?'':'eval',
 	entry: {
 		build: path.resolve(__dirname, 'src', 'js', 'animation-bootstrap.js')
 	},
