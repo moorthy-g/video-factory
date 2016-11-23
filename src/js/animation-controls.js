@@ -25,6 +25,8 @@ function AnimationControls(animation) {
 	this.volumeBeforeMute = null;
 	this.paused = animation.tl.paused();
 	this.replay = false;
+	//helps to prevent mobile screen from sleep
+	this.noSleep =	new ( require('./nosleep') )();
 
 	if(audio) {
 		this.setSoundProgress(0.6);
@@ -108,6 +110,8 @@ AnimationControls.prototype.init = function() {
 				self.play();
 			}
 
+			self.noSleep.enable(10000)
+
 		})
 
 	} else { //autoplay animation for desktop
@@ -146,6 +150,7 @@ AnimationControls.prototype.play = function() {
 				this.audio.currentTime = 0;
 			}.bind(this), 0)
 			this.replay = false;
+			this.noSleep.enable(10000);
 		}
 		this.animation.play();
 		this.audio.play();
@@ -176,6 +181,7 @@ AnimationControls.prototype.insistReplay = function() {
 	this.pause();
 	this.showControlBar();
 	helper.addClass(this.toggleBtn, 'replay');
+	this.noSleep.disable();
 }
 
 AnimationControls.prototype.toggleSound = function() {
