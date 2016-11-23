@@ -57,6 +57,7 @@ Animation.prototype.preloadElements = function(callback) {
 				audio = this.audio = document.createElement('audio'), handler;
 
 			audio.src = this.config.audio;
+			audio.preload = 'auto'; //firefox needs this
 			this.container.appendChild(audio);
 
 			if(! isApple) { //ios doesn't preload audio, until user plays it.
