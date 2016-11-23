@@ -2,8 +2,7 @@
   "name": "video-factory",
   "version": "0.0.1",
   "description": "An animation module boilerplate for video generation projects",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^6.3.7",
     "clean-webpack-plugin": "^0.1.10",
     "cross-env": "^3.1.3",
@@ -21,7 +20,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1"
   },
-  "optionalDependencies": {
+  "devDependencies": {
     "fluent-ffmpeg": "^2.1.0",
     "fs-extra": "^0.30.0",
     "webpack-dev-server": "^1.16.2"
@@ -29,6 +28,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "cross-env BUILD=yes webpack -p",
+    "prodinstall": "npm install --production",
     "createvideo": "npm run build && node ./phantom-engine/create-video.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
