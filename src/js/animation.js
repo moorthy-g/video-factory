@@ -1,7 +1,5 @@
 'use strict';
 
-var sceneKrds = require('./scene-krdslogo');
-
 function Animation(config, callback) {
 
 	this.tl = new TimelineMax({ paused: true });
@@ -9,35 +7,48 @@ function Animation(config, callback) {
 	this.audio = null;
 	this.notPhantom = navigator.userAgent.indexOf("PhantomJS") == -1;
 	this.loader = document.getElementById('animation_loader');
-	this.container = document.createElement('main');
+	this.container = document.getElementById('animation_container').firstElementChild;
 	this.images = [];
+	this.storyBoard = new Array();
 	this.onComplete = new Function();
   	this.onPause = new Function();
   	this.onPlay = new Function();
 
-	this.showLoader();
-
-	this.preloadElements()
-		.then( this.createStoryBoard.bind(this) )
+	this.createStoryBoard()
+		.then( this.preloadElements.bind(this) )
+		.then( this.executeStoryBoard.bind(this) )
+		.then( this.initControls.bind(this) )
 		.then( this.finalSetup.bind(this) )
 		.then( callback.bind(this) )
 };
 
-Animation.prototype.injectContent = function() {
-	//inject dynamic contents here
+Animation.prototype.createStoryBoard = function() {
+
+	//add scene sequence
+	this.addScene( require('./scene-krdslogo') );
+
+	return Promise.resolve();
+
 }
 
-Animation.prototype.getCurrentTime = function () {
-	return this.tl.time() / this.tl.timeScale();
+Animation.prototype.addScene = function (Scene, position) {
+	var scene = new Scene(this.config);
+	this.storyBoard.push( {scene: scene, position: position} )
+	this.images = this.images.concat(scene.images);
 };
 
-Animation.prototype.showLoader = function () {
-	this.loader.style.display = 'block';
-};
+Animation.prototype.executeStoryBoard = function() {
 
-Animation.prototype.hideLoader = function () {
-	this.loader.style.display = 'none';
-};
+	this.storyBoard.forEach(function(story) {
+
+		var scene = story.scene;
+		this.container.appendChild(scene.container);
+		scene.createTimeline();
+		this.tl.add( scene.tl.play(), story.position );
+
+	}.bind(this))
+
+}
 
 Animation.prototype.preloadElements = function(callback) {
 
@@ -90,20 +101,6 @@ Animation.prototype.preloadElements = function(callback) {
 
 }
 
-Animation.prototype.createStoryBoard = function() {
-
-	//add scene sequence
-	this.addScene(sceneKrds);
-
-}
-
-Animation.prototype.addScene = function (scene, position) {
-	this.images = this.images.concat(scene.images);
-	this.container.appendChild(scene.container);
-	this.tl.add( scene.tl.play(), position );
-	return this;
-};
-
 Animation.prototype.loadImage = function(src) {
 	return new Promise(function(resolve, reject){
 		var img = new Image();
@@ -121,20 +118,16 @@ Animation.prototype.loadImage = function(src) {
 };
 
 Animation.prototype.initControls = function() {
-	var AnimationControls = require('./animation-controls');
-	this.controls = new AnimationControls(this);
+	if(this.notPhantom) {
+		var AnimationControls = require('./animation-controls');
+		this.controls = new AnimationControls(this);
+	}
 }
 
-
 Animation.prototype.finalSetup = function () {
-	var actualDuration, animationContainer = document.getElementById('animation_container');
+	var actualDuration = this.tl.duration() / this.tl.timeScale();
 
-	animationContainer.appendChild(this.container);
-	this.notPhantom && this.initControls();
-	this.container.appendChild(this.loader);
 	this.hideLoader();
-
-	actualDuration = this.tl.duration() / this.tl.timeScale();
 
 	this.totalFrames = Math.floor(actualDuration * this.config.framerate);
 	this.currentFrame = 0;
@@ -142,6 +135,18 @@ Animation.prototype.finalSetup = function () {
 	console.log("timeline duration => " + this.tl.duration());
 	console.log("forced duration => " + actualDuration);
 	console.log("totalframes => " + this.totalFrames);
+};
+
+Animation.prototype.getCurrentTime = function () {
+	return this.tl.time() / this.tl.timeScale();
+};
+
+Animation.prototype.showLoader = function () {
+	this.loader.style.display = 'block';
+};
+
+Animation.prototype.hideLoader = function () {
+	this.loader.style.display = 'none';
 };
 
 Animation.prototype.go = function(frame) {

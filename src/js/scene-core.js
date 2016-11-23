@@ -1,14 +1,19 @@
 'use strict';
 
-function SceneCore() {
-	this.tl = new TimelineLite({ paused: true });
+function SceneCore(config, template) {
+	this.tl = null;
+	this.config = config;
+	this.container = null;
 	this.images = new Array();
+
+	this.parseTemplate(template);
+	this.createPreloadQueue && this.createPreloadQueue();
 }
 
-SceneCore.prototype.parseHTML = function (htmlString) {
+SceneCore.prototype.parseTemplate = function (template) {
 	var parent = document.createElement('div');
-	parent.innerHTML = htmlString;
-	return parent.firstChild;
+	parent.innerHTML = template;
+	this.container = parent.firstChild;
 };
 
 module.exports = SceneCore;

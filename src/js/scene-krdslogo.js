@@ -1,14 +1,28 @@
 'use strict';
 
-var SceneCore = require('./scene-core'),
-	template = require('../view/scene-krdslogo.html');
+var SceneCore = require('./scene-core');
 
-var scene = new SceneCore(), container = scene.container = scene.parseHTML(template),
-myElement = container.querySelector('.myElement'), tl = scene.tl;
+function Scene(config) {
+	//call super constructor
+	SceneCore.call( this, config, require('../view/scene-krdslogo') );
+}
 
-tl.to(myElement, 5, { y:300, x:450, visibility:"visible" });
+// extend scene core
+Scene.prototype = Object.create(SceneCore.prototype);
+Scene.prototype.constructor = SceneCore;
 
-//images to preload for this scene
-scene.images.push( require("../img/logo.png") );
+Scene.prototype.createTimeline = function() {
+	var container = this.container,
+		tl = this.tl = new TimelineLite({ paused: true }),
+		myElement = container.querySelector('.myElement');
 
-module.exports = scene;
+	//timeline
+	tl.to(myElement, 5, { y:300, x:450, visibility:"visible" });
+}
+
+Scene.prototype.createPreloadQueue = function() {
+	//images to preload for this scene
+	this.images.push( require("../img/logo.png") );
+}
+
+module.exports = Scene;

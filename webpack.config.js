@@ -68,6 +68,9 @@ module.exports = {
 		inline: true,
 		compress: true
 	},
+	resolve: {
+		extensions: [ '', '.js', '.less', '.hbs', '.html' ]
+	},
 	module: {
 		loaders: loaders
 	},
