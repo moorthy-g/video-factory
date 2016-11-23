@@ -4,16 +4,7 @@ require('gsap');
 require('es6-promise').polyfill();
 
 window.injectConfig = function() {
-
-	window.setconfig({
-		'width': 854,
-		'height': 480,
-		'autoplay': true,
-		'framerate': 30,
-		'audio': require('../audio/audio.mp3')
-		/* other config entries */
-	});
-
+	window.setconfig( require('./sample-config') );
 };
 
 var config = function () {
