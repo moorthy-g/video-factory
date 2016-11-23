@@ -1,4 +1,6 @@
 'use strict';
+// require style
+require('../style/scene-krdslogo');
 
 var SceneCore = require('./scene-core');
 

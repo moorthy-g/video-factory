@@ -1,6 +1,5 @@
 'use strict';
 
-require('../style/main.less');
 require('gsap');
 require('es6-promise').polyfill();
 

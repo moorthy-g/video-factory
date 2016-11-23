@@ -1,4 +1,6 @@
 'use strict';
+// require style
+require('../style/animation-controls');
 
 var AnimationHelper = require('./animation-helper'),
 	AnimationControlsDOM = require('../view/animation-controls.html'),

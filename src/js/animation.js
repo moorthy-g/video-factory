@@ -1,4 +1,6 @@
 'use strict';
+// require style
+require('../style/animation');
 
 function Animation(config, callback) {
 
