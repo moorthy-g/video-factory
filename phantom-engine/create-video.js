@@ -30,7 +30,7 @@ var generateVideo = function() {
 	.audioCodec('libmp3lame')
 	.audioBitrate('96k')
 	.addOption('-pix_fmt', 'yuv420p')
-	.size('854x480')
+	//.size('854x480')
 	.fps(30)
 	.inputFPS(30)
 	.on('error', function(err) {
