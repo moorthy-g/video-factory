@@ -6,6 +6,11 @@ function Animation(config, callback) {
 
 	this.tl = new TimelineMax({ paused: true });
 	this.config = config;
+	this.duration = 0;
+	/* 0 defines default timeline duration,
+		any other positive number, forces timeline's duration
+		to use that value
+	*/
 	this.audio = null;
 	this.notPhantom = navigator.userAgent.indexOf("PhantomJS") == -1;
 	this.loader = document.getElementById('animation_loader');
@@ -19,6 +24,7 @@ function Animation(config, callback) {
 	this.createStoryBoard()
 		.then( this.preloadElements.bind(this) )
 		.then( this.executeStoryBoard.bind(this) )
+		.then( this.forceDuration.bind(this) )
 		.then( this.initControls.bind(this) )
 		.then( this.finalSetup.bind(this) )
 		.then( callback.bind(this) )
@@ -51,6 +57,12 @@ Animation.prototype.executeStoryBoard = function() {
 	}.bind(this))
 
 }
+
+Animation.prototype.forceDuration = function () {
+	if(this.duration > 0) {
+		this.tl.duration( this.duration );
+	}
+};
 
 Animation.prototype.preloadElements = function(callback) {
 
