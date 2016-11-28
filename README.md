@@ -1,4 +1,4 @@
-# Video Factory
+# Video Generation Frontend Boilerplate
 
 This module is created as an input for [animation renderer](https://git.int.krds.com/tools/animation-renderer) (which renders animations to video) as well as to play the animation in web browser
 

@@ -1,6 +1,6 @@
 {
-  "name": "video-factory",
-  "version": "0.0.1",
+  "name": "video-generation-frontend-bp",
+  "version": "1.0.0",
   "description": "An animation module boilerplate for video generation projects",
   "dependencies": {
     "autoprefixer": "^6.3.7",
