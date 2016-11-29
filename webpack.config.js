@@ -1,37 +1,39 @@
 var webpack = require('webpack'),
 	path = require('path'),
-	autoprefixer = require('autoprefixer'),
 	ExtractTextPlugin = require('extract-text-webpack-plugin'),
 	CleanWebpackPlugin = require('clean-webpack-plugin'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
 	extractCSS = new ExtractTextPlugin('./[name].[contenthash:8].css'),
 	isBuild = ( process.env.BUILD === 'yes' );
 
-var loaders = [
+var rules = [
 	{
 		test: /\.less$/,
-		loader: extractCSS.extract('style', 'css!postcss?pack=cleaner!less')
+		loader: extractCSS.extract({
+			fallbackLoader: 'style-loader',
+			loader: 'css-loader!postcss-loader!less-loader'
+		})
 	},
 	{
 		test: /\.(jpe?g|png|gif|webp)$/,
-		loader: 'file?name=./img/[name].[hash:8].[ext]'
+		loader: 'file-loader?name=./img/[name].[hash:8].[ext]'
 	},
 	{
 		test: /\.html$/,
-		loader: 'html?interpolate'
+		loader: 'html-loader'
 	},
 	{
 		test: /\.hbs$/,
-		loader: 'handlebars!html-minify'
+		loader: 'handlebars-loader!html-minify-loader'
 	},
 	{
 		test: /\.(mp3|ogg)$/,
-		loader: 'file?name=./audio/[name].[ext]'
+		loader: 'file-loader?name=./audio/[name].[ext]'
 	},
 	{
 		test: /\.(woff2|woff|ttf|svg)$/,
 		include: path.resolve(__dirname, 'src', 'font'),
-		loader: 'file?name=./font/[hash:8].[ext]'
+		loader: 'file-loader?name=./font/[hash:8].[ext]'
 	}
 ]
 
@@ -68,21 +70,14 @@ module.exports = {
 	devServer: {
 		contentBase: path.resolve(__dirname, 'build'),
 		host: '0.0.0.0',
-		colors: true,
 		inline: true,
 		compress: true
 	},
 	resolve: {
-		extensions: [ '', '.js', '.less', '.hbs', '.html' ]
+		extensions: [ '.js', '.less', '.hbs', '.html' ]
 	},
 	module: {
-		loaders: loaders
+		rules: rules
 	},
-	plugins: plugins,
-	postcss: function() {
-		return {
-			defaults: [ autoprefixer ],
-			cleaner: [ autoprefixer({ browsers:['iOS 7', 'IE 9'] }) ]
-		};
-	}
+	plugins: plugins
 }
