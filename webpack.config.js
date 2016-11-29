@@ -4,7 +4,7 @@ var webpack = require('webpack'),
 	ExtractTextPlugin = require('extract-text-webpack-plugin'),
 	CleanWebpackPlugin = require('clean-webpack-plugin'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
-	extractCSS = new ExtractTextPlugin('./[name].[chunkhash:8].css'),
+	extractCSS = new ExtractTextPlugin('./[name].[contenthash:8].css'),
 	isBuild = ( process.env.BUILD === 'yes' );
 
 var loaders = [
