@@ -26,6 +26,7 @@ function AnimationControls(animation) {
 	this.duration = animation.tl.duration();
 	this.volumeBeforeMute = null;
 	this.paused = animation.tl.paused();
+	this.pageHidden = false;
 	this.replay = false;
 	//helps to prevent mobile screen from sleep
 	this.noSleep =	new ( require('./nosleep') )();
@@ -43,6 +44,8 @@ function AnimationControls(animation) {
 
 AnimationControls.prototype.init = function() {
 	var self = this, tl = this.animation.tl, playBtn = this.playBtn;
+
+	this.registerVisibilityChange();
 
 	//show controlbar
 	self.controls.addEventListener('mouseenter', function() {
@@ -95,7 +98,7 @@ AnimationControls.prototype.init = function() {
 		self.setSoundProgress(e);
 	});
 
-	if(helper.isMobile() || !this.animation.config.autoplay) {
+	if(helper.isMobile() || !this.animation.config.autoplay || this.pageHidden) {
 
 		playBtn.style.display = 'block';
 		self.animation.tl.pause(1); //preview poster location
@@ -121,6 +124,34 @@ AnimationControls.prototype.init = function() {
 	}
 
 }
+
+AnimationControls.prototype.registerVisibilityChange = function () {
+	var visibilityChangeEvent, hidden;
+
+	if('hidden' in document) {
+		visibilityChangeEvent = 'visibilitychange';
+		hidden = 'hidden';
+	}
+	else if ('webkitHidden' in document) {
+		visibilityChangeEvent = 'webkitvisibilitychange';
+		hidden = 'webkitHidden';
+	}
+	else {
+		return false;
+	}
+
+	//get the initial visibility
+	this.pageHidden = document[hidden];
+	console.log('this.pageHidden', this.pageHidden)
+
+	document.addEventListener(visibilityChangeEvent, function(){
+		this.pageHidden = document[hidden];
+		if(this.pageHidden) {
+			this.pause();
+			this.showControlBar();
+		}
+	}.bind(this));
+};
 
 AnimationControls.prototype.firstPlayApple = function() {
 	var self = this, handler;
