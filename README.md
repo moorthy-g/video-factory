@@ -3,6 +3,10 @@
 This is a micro framework. It includes
  - A player (controls the GSAP animation playback)
  - A node utility (converts GSAP animation to video)
+ 
+### Requirements
+ - Phantomjs
+ - FFMpeg
 
 ### Initial setup
 

@@ -10,8 +10,8 @@ var rules = [
 	{
 		test: /\.less$/,
 		loader: extractCSS.extract({
-			fallbackLoader: 'style-loader',
-			loader: 'css-loader!postcss-loader!less-loader'
+			fallback: 'style-loader',
+			use: ['css-loader', 'postcss-loader', 'less-loader']
 		})
 	},
 	{
