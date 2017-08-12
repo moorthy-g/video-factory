@@ -33,7 +33,7 @@ function Animation(config, callback) {
 Animation.prototype.createStoryBoard = function() {
 
 	//add scene sequence
-	this.addScene( require('./scene-krdslogo') );
+	this.addScene( require('./scene-sample') );
 
 	return Promise.resolve();
 

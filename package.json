@@ -1,5 +1,5 @@
 {
-  "name": "video-generation-frontend-bp",
+  "name": "video-factory",
   "version": "1.0.1",
   "description": "An animation module boilerplate for video generation projects",
   "dependencies": {
